@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "lib/prisma.ts", "app/(protected)/onboarding/_components/onboarding-form.jsx", "app/(protected)/coverletter/[id]/page.jsx"  ],
   "exclude": ["node_modules"]
 }
