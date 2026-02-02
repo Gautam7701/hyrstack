@@ -41,7 +41,12 @@ export default clerkMiddleware((auth, req) => {
   const { pathname } = req.nextUrl;
 
   // ✅ Allow Inngest to access without auth
-  if (pathname.startsWith("/api/inngest")) {
+
+  // if (pathname.startsWith("/api/inngest")) {
+  //   return NextResponse.next();
+  // }
+   const publicRoutes = ["/", "/privacy", "/terms", "/contact"];
+  if (publicRoutes.includes(pathname) || pathname.startsWith("/api/inngest")) {
     return NextResponse.next();
   }
 
