@@ -26,6 +26,7 @@ import { entriesToMarkdown } from "../../../../lib/helper";
 import { resumeSchema } from "../../../lib/schema";
 // import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 // import html2pdf from "html2pdf.js";
 
 
@@ -122,40 +123,50 @@ ${parts.join(" | ")}
   };
 
 
+// const generatePDF = () => {
+//   if (typeof window === "undefined") return;
+
+//   setIsGenerating(true);
+
+//   try {
+//     const doc = new jsPDF({
+//       unit: "pt",   // points
+//       format: "a4",
+//       orientation: "portrait",
+//     });
+
+//     // Get the text content of the resume
+//     const resumeText = previewContent;
+
+//     // Split text into lines (jsPDF doesn't wrap automatically)
+//     const pageWidth = doc.internal.pageSize.getWidth() - 40; // 20pt margin each side
+//     const lines = doc.splitTextToSize(resumeText, pageWidth);
+
+//     // Add lines to PDF
+//     doc.text(lines, 20, 40); // start 40pt from top
+
+//     // Save the PDF
+//     doc.save("resume.pdf");
+//     toast.success("PDF generated!");
+//   } catch (err) {
+//     console.error(err);
+//     toast.error("Failed to generate PDF");
+//   } finally {
+//     setIsGenerating(false);
+//   }
+// };
+
 const generatePDF = () => {
-  if (typeof window === "undefined") return;
-
   setIsGenerating(true);
-
   try {
-    const doc = new jsPDF({
-      unit: "pt",   // points
-      format: "a4",
-      orientation: "portrait",
-    });
-
-    // Get the text content of the resume
-    const resumeText = previewContent;
-
-    // Split text into lines (jsPDF doesn't wrap automatically)
-    const pageWidth = doc.internal.pageSize.getWidth() - 40; // 20pt margin each side
-    const lines = doc.splitTextToSize(resumeText, pageWidth);
-
-    // Add lines to PDF
-    doc.text(lines, 20, 40); // start 40pt from top
-
-    // Save the PDF
-    doc.save("resume.pdf");
-    toast.success("PDF generated!");
+    window.print();
+    toast.success("Use 'Save as PDF' in the print dialog!");
   } catch (err) {
-    console.error(err);
-    toast.error("Failed to generate PDF");
+    toast.error("Failed to open print dialog");
   } finally {
     setIsGenerating(false);
   }
 };
-
-
 
 
   const onSubmit = async (data) => {
@@ -427,7 +438,7 @@ const generatePDF = () => {
 
           {/* Hidden PDF container */}
 
-           <div
+           {/* <div
   aria-hidden
   style={{
     position: "fixed",
@@ -452,6 +463,50 @@ const generatePDF = () => {
   >
     <ReactMarkdown>{previewContent}</ReactMarkdown>
   </div>
+</div> */}
+{/* <div
+  id="resume-pdf"
+  style={{
+    visibility: "hidden",
+    position: "fixed",
+    top: "-9999px",
+    left: "-9999px",
+    width: "794px",
+    backgroundColor: "#ffffff",
+    color: "#000000",
+    fontFamily: "Arial, sans-serif",
+    fontSize: "14px",
+    lineHeight: "1.6",
+    padding: "40px",
+  }}
+> */}
+<div
+  id="resume-pdf"
+  style={{
+    visibility: "hidden",
+    position: "absolute",
+    top: "-9999px",
+    left: "-9999px",
+    width: "794px",
+    backgroundColor: "#ffffff",
+    color: "#000000",
+    fontFamily: "Arial, sans-serif",
+    fontSize: "14px",
+    lineHeight: "1.6",
+    padding: "40px",
+  }}
+>
+  <style>{`
+    #resume-pdf h1 { font-size: 24px; font-weight: bold; margin-bottom: 4px; }
+    #resume-pdf h2 { font-size: 18px; font-weight: bold; border-bottom: 1px solid #ccc; margin: 16px 0 8px; padding-bottom: 4px; }
+    #resume-pdf h3 { font-size: 15px; font-weight: bold; margin: 8px 0 4px; }
+    #resume-pdf p  { margin: 4px 0; }
+    #resume-pdf ul { padding-left: 20px; margin: 4px 0; }
+    #resume-pdf li { margin: 2px 0; }
+    #resume-pdf a  { color: #000; }
+    #resume-pdf [align="center"] { text-align: center; }
+  `}</style>
+  <ReactMarkdown rehypePlugins={[rehypeRaw]}>{previewContent}</ReactMarkdown>
 </div>
 
         </TabsContent>
