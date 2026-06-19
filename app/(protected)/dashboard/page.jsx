@@ -1,24 +1,19 @@
-import React from 'react'
-import { getUserOnboardingStatus } from '../../actions/user'
-import { getDashboardData } from "@/app/actions/dashboard";
-import { redirect } from 'next/navigation'
-import DashboardView from './_components/dashboard-view'
+import { redirect } from "next/navigation";
 
+import { getDashboardData } from "@/app/actions/dashboard";
+import { getUserOnboardingStatus } from "../../actions/user";
+import DashboardView from "./_components/dashboard-view";
 
 const page = async () => {
   const { isOnboarded } = await getUserOnboardingStatus();
 
-  if(!isOnboarded){
-    redirect('/onboarding');
+  if (!isOnboarded) {
+    redirect("/onboarding");
   }
 
+  const insights = await getDashboardData();
 
-  const  insights  = await getDashboardData();
-  return (
-    <div className='container mx-auto'>
-      <DashboardView insights={insights} />
-    </div>
-  )
-}
+  return <DashboardView insights={insights} />;
+};
 
 export default page;

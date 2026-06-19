@@ -184,17 +184,22 @@ const generatePDF = () => {
   };
 
   return (
-    <div
-      data-color-mode="light"
-      className="pt-28 px-6 max-w-7xl mx-auto space-y-8 min-h-screen text-white"
-    >
-      <div className="flex flex-col md:flex-row justify-between items-center gap-2">
-        <h1 className="font-bold gradient-title text-5xl md:text-6xl">
-          Resume Builder
-        </h1>
-        <div className="space-x-2">
+    <div data-color-mode="dark" className="page-shell space-y-8 text-white">
+      <div className="flex flex-col justify-between gap-5 rounded-[1.75rem] border border-white/10 bg-white/[0.045] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl md:flex-row md:items-center md:p-8">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-200/70">
+            Resume command center
+          </p>
+          <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-6xl">
+            Resume Builder
+          </h1>
+          <p className="mt-3 max-w-2xl text-white/60">
+            Draft a polished, ATS-ready resume and refine every section with AI.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Button
-            variant="destructive"
+            variant="outline"
             onClick={handleSubmit(onSubmit)}
             disabled={isSaving}
           >
@@ -227,7 +232,7 @@ const generatePDF = () => {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-white/5 border border-white/10 rounded-xl">
+        <TabsList className="rounded-2xl border border-white/10 bg-white/[0.05] p-1">
           <TabsTrigger value="edit">Form</TabsTrigger>
           <TabsTrigger value="preview">Markdown</TabsTrigger>
         </TabsList>
@@ -236,8 +241,8 @@ const generatePDF = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             {/* Contact Info */}
             <div className="space-y-4">
-              <h3 className="text-lg font-medium">Contact Information</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border rounded-lg bg-muted/50">
+              <h3 className="text-lg font-medium text-white">Contact Information</h3>
+              <div className="grid grid-cols-1 gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Email</label>
                   <Input
@@ -419,7 +424,7 @@ const generatePDF = () => {
           )}
 
           {activeTab === "preview" && resumeMode !== "preview" && (
-            <div className="flex p-3 gap-2 items-center border-2 border-yellow-600 text-yellow-600 rounded mb-2">
+            <div className="mb-3 flex items-center gap-2 rounded-2xl border border-yellow-300/30 bg-yellow-300/10 p-3 text-yellow-100">
               <AlertTriangle className="h-5 w-5" />
               <span className="text-sm">
                 You will lose edited markdown if you update the form data.
@@ -427,7 +432,7 @@ const generatePDF = () => {
             </div>
           )}
 
-          <div className="border rounded-lg">
+          <div className="overflow-hidden rounded-2xl border border-white/10">
             <MDEditor
               value={previewContent}
               onChange={setPreviewContent}

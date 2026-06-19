@@ -1,17 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { format } from "date-fns";
-import { Edit2, Eye, Trash2 } from "lucide-react";
+import { Eye, FileText, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,6 +16,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { deleteCoverLetter } from "../../../actions/coverletter";
 
 export default function CoverLetterList({ coverLetters }) {
@@ -40,11 +41,16 @@ export default function CoverLetterList({ coverLetters }) {
 
   if (!coverLetters?.length) {
     return (
-      <Card>
+      <Card className="items-center py-14 text-center">
         <CardHeader>
-          <CardTitle>No Cover Letters Yet</CardTitle>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[0.06]">
+            <FileText className="h-7 w-7 text-sky-200" />
+          </div>
+          <CardTitle className="text-2xl text-white">
+            No Cover Letters Yet
+          </CardTitle>
           <CardDescription>
-            Create your first cover letter to get started
+            Create your first role-specific letter to get started.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -52,31 +58,35 @@ export default function CoverLetterList({ coverLetters }) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="grid gap-4">
       {coverLetters.map((letter) => (
-        <Card key={letter.id} className="group relative ">
+        <Card key={letter.id} className="transition hover:border-sky-200/30">
           <CardHeader>
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-start">
               <div>
-                <CardTitle className="text-xl gradient-title">
+                <CardTitle className="text-2xl text-white">
                   {letter.jobTitle} at {letter.companyName}
                 </CardTitle>
                 <CardDescription>
                   Created {format(new Date(letter.createdAt), "PPP")}
                 </CardDescription>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  type="button"
+                  onClick={() => router.push(`/coverletter/${letter.id}`)}
+                >
+                  <Eye className="h-4 w-4" />
+                  <span className="sr-only">View cover letter</span>
+                </Button>
+
                 <AlertDialog>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => router.push(`/coverletter/${letter.id}`)}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline" size="icon">
+                    <Button variant="outline" size="icon" type="button">
                       <Trash2 className="h-4 w-4" />
+                      <span className="sr-only">Delete cover letter</span>
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
@@ -92,7 +102,7 @@ export default function CoverLetterList({ coverLetters }) {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => handleDelete(letter.id)}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                        className="bg-red-500 text-white hover:bg-red-400"
                       >
                         Delete
                       </AlertDialogAction>
@@ -103,9 +113,9 @@ export default function CoverLetterList({ coverLetters }) {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-muted-foreground text-sm line-clamp-3">
+            <p className="line-clamp-3 text-sm leading-6 text-white/58">
               {letter.jobDescription}
-            </div>
+            </p>
           </CardContent>
         </Card>
       ))}

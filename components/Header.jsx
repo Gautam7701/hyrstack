@@ -1,157 +1,3 @@
-// import React from "react";
-// import Link from "next/link";
-// import Image from "next/image";
-// import {
-//   SignedIn,
-//   SignedOut,
-//   SignInButton,
-//   SignUpButton,
-//   UserButton,
-// } from "@clerk/nextjs";
-// import logo from "../public/hyrstackklogo.png"
-// import { LayoutGrid, ChevronDown } from "lucide-react";
-// import { FileText, Mail, Mic } from "lucide-react";
-// import { Rocket } from "lucide-react";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
-
-// const Header = () => {
-//   return (
-//     <header className="fixed top-0 left-0 w-full z-50">
-//       <div className="mx-auto max-w-7xl px-6">
-//         <div
-//           className="flex h-16 items-center justify-between rounded-2xl mt-4
-//           bg-white/5 backdrop-blur-xl border border-white/10
-//           shadow-lg shadow-black/20"
-//         >
-//           {/* Logo */}
-//           <Link href="/" className="flex items-center pl-4">
-//             <Image
-//               src={logo}
-//               alt="HyrStack Logo"
-//               width={120}
-//               height={40}
-//               className="object-contain"
-//               priority
-//             />
-//           </Link>
-
-//           {/* Right Section */}
-//           <div className="flex items-center gap-4 pr-4">
-//             {/* Industry Insights */}
-//             <Link href="/dashboard" className="no-underline">
-//   <button
-//     className="flex items-center gap-2 px-4 py-2 rounded-lg
-//     text-sm text-white/80 hover:text-white
-//     bg-white/5 hover:bg-white/15
-//     border border-white/15
-//     transition"
-//   >
-//     <LayoutGrid size={16} />
-//     Industry Insights
-//   </button>
-// </Link>
-
-//             {/* Dropdown Menu */}
-//             <DropdownMenu>
-//               <DropdownMenuTrigger asChild>
-//                 <button
-//                   className="flex items-center gap-1 px-4 py-2 rounded-lg
-//                   text-sm text-white/80 hover:text-white
-//                   bg-white/5
-// hover:bg-white/15
-// border border-white/15
-//  transition"
-//                 >
-//                   <Rocket size={16} className="text-white/80" />
-//                   Launchpad
-//                   <ChevronDown size={16} />
-//                 </button>
-//               </DropdownMenuTrigger>
-
-//               <DropdownMenuContent
-//                 align="end"
-//                 className="bg-black/80 backdrop-blur-xl border border-white/10 text-white"
-//               >
-//                 <DropdownMenuItem asChild>
-//                   <Link
-//                     href="/resumebuilder"
-//                     className="flex items-center gap-3 cursor-pointer"
-//                   >
-//                     <FileText size={16} className="text-white/70" />
-//                     <span>Resume Builder</span>
-//                   </Link>
-//                 </DropdownMenuItem>
-
-//                 <DropdownMenuItem asChild>
-//                   <Link
-//                     href="/coverletter"
-//                     className="flex items-center gap-3 cursor-pointer"
-//                   >
-//                     <Mail size={16} className="text-white/70" />
-//                     <span>Cover Letter</span>
-//                   </Link>
-//                 </DropdownMenuItem>
-
-//                 <DropdownMenuItem asChild>
-//                   <Link
-//                     href="/interview"
-//                     className="flex items-center gap-3 cursor-pointer"
-//                   >
-//                     <Mic size={16} className="text-white/70" />
-//                     <span>Mock Interview</span>
-//                   </Link>
-//                 </DropdownMenuItem>
-
-//               </DropdownMenuContent>
-//             </DropdownMenu>
-
-//             {/* Auth */}
-//             <SignedOut>
-//               <SignInButton>
-//                 <button className="text-sm text-white/80 hover:text-white transition">
-//                   Sign In
-//                 </button>
-//               </SignInButton>
-
-//               <SignUpButton>
-//                 <button
-//                   className="rounded-full px-5 py-2 text-sm font-medium
-//                   bg-white/10 text-white
-//                   border border-white/20
-//                   hover:bg-white/20 transition backdrop-blur-md"
-//                 >
-//                   Get Started
-//                 </button>
-//               </SignUpButton>
-//             </SignedOut>
-
-//             <SignedIn>
-//               <UserButton
-//                 appearance={{
-//                   elements: {
-//                     avatarBox: "w-9 h-9",
-//                   },
-//                 }}
-//               />
-//             </SignedIn>
-//           </div>
-//         </div>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
-
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import {
   SignedIn,
   SignedOut,
@@ -159,138 +5,169 @@ import {
   SignUpButton,
   UserButton,
 } from "@clerk/nextjs";
+import {
+  BriefcaseBusiness,
+  ChevronDown,
+  FileText,
+  LayoutGrid,
+  Mail,
+  Menu,
+  Mic,
+  Rocket,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-import logo from "../public/hyrstackklogo.png";
-import { LayoutGrid, ChevronDown, FileText, Mail, Mic, Rocket } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { checkUser } from "../lib/checkUser";
+import logo from "../public/hyrstackklogo.png";
 
-const Header = async() => {
+const productLinks = [
+  { href: "/dashboard", label: "Industry Insights", icon: LayoutGrid },
+  { href: "/resumebuilder", label: "Resume Builder", icon: FileText },
+  { href: "/coverletter", label: "Cover Letter", icon: Mail },
+  { href: "/interview", label: "Mock Interview", icon: Mic },
+];
+
+const Header = async () => {
   await checkUser();
+
   return (
-    <header className="fixed top-0 left-0 w-full z-50">
-      <div className="mx-auto max-w-7xl px-6">
-        <div
-          className="flex h-16 items-center justify-between rounded-2xl mt-4
-          bg-white/5 backdrop-blur-xl border border-white/10
-          shadow-lg shadow-black/20"
-        >
-          {/* Logo */}
-          <Link href="/" className="flex items-center pl-4">
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mt-4 flex h-16 items-center justify-between rounded-2xl border border-white/10 bg-black/75 px-3 shadow-2xl shadow-black/40 backdrop-blur-2xl sm:px-4">
+          <Link href="/" className="flex items-center gap-3">
             <Image
               src={logo}
-              alt="HyrStack Logo"
-              width={120}
-              height={40}
-              className="object-contain"
+              alt="HyrStack"
+              width={132}
+              height={42}
+              className="h-9 w-auto object-contain"
               priority
             />
           </Link>
 
-          {/* Right Section */}
-          <div className="flex items-center gap-4 pr-4">
-            {/* Only for SignedOut Users */}
+          <nav className="hidden items-center gap-2 md:flex">
+            <SignedIn>
+              <Link
+                href="/dashboard"
+                className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm font-medium text-white/75 transition hover:border-sky-200/45 hover:bg-white/[0.08] hover:text-white"
+              >
+                <LayoutGrid size={16} />
+                Industry Insights
+              </Link>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 text-sm font-medium text-white/75 transition hover:border-sky-200/45 hover:bg-white/[0.08] hover:text-white">
+                    <Rocket size={16} />
+                    Launchpad
+                    <ChevronDown size={16} />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  align="end"
+                  className="w-56 border-white/10 bg-black/95 p-2 text-white shadow-2xl shadow-black/40 backdrop-blur-xl"
+                >
+                  {productLinks.slice(1).map(({ href, label, icon: Icon }) => (
+                    <DropdownMenuItem key={href} asChild>
+                      <Link
+                        href={href}
+                        className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-white/80 focus:text-white"
+                      >
+                        <Icon size={16} className="text-sky-200" />
+                        <span>{label}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </SignedIn>
+          </nav>
+
+          <div className="flex items-center gap-2">
             <SignedOut>
               <SignInButton>
-                <button className="text-sm text-white/80 hover:text-white transition cursor-pointer">
+                <button className="hidden h-10 rounded-xl px-4 text-sm font-medium text-white/75 transition hover:bg-white/10 hover:text-white sm:inline-flex sm:items-center">
                   Sign In
                 </button>
               </SignInButton>
-
               <SignUpButton>
-                <button
-                  className="rounded-full px-5 py-2 text-sm font-medium
-                  bg-white/10 text-white
-                  border border-white/20
-                  hover:bg-white/20 transition backdrop-blur-md
-                  cursor-pointer"
-                >
+                <button className="h-10 rounded-xl bg-white px-4 text-sm font-semibold text-black shadow-lg shadow-white/10 transition hover:bg-sky-100">
                   Get Started
                 </button>
               </SignUpButton>
             </SignedOut>
 
-            {/* Only for SignedIn Users */}
             <SignedIn>
-              {/* Industry Insights */}
-              <Link href="/dashboard" className="no-underline">
-                <button
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg
-                  text-sm text-white/80 hover:text-white
-                  bg-white/5 hover:bg-white/15
-                  border border-white/15
-                  transition cursor-pointer"
-                >
-                  <LayoutGrid size={16} />
-                  Industry Insights
-                </button>
-              </Link>
-
-              {/* Launchpad Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button
-                    className="flex items-center gap-1 px-4 py-2 rounded-lg
-                    text-sm text-white/80 hover:text-white
-                    bg-white/5 hover:bg-white/15
-                    border border-white/15 transition cursor-pointerff"
-                  >
-                    <Rocket size={16} className="text-white/80" />
-                    Launchpad
-                    <ChevronDown size={16} />
-                  </button>
-                </DropdownMenuTrigger>
-
-                <DropdownMenuContent
-                  align="end"
-                  className="bg-black/80 backdrop-blur-xl border border-white/10 text-white"
-                >
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/resumebuilder"
-                      className="flex items-center gap-3 cursor-pointer"
-                    >
-                      <FileText size={16} className="text-white/70" />
-                      <span>Resume Builder</span>
-                    </Link>
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/coverletter"
-                      className="flex items-center gap-3 cursor-pointer"
-                    >
-                      <Mail size={16} className="text-white/70" />
-                      <span>Cover Letter</span>
-                    </Link>
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem asChild>
-                    <Link
-                      href="/interview"
-                      className="flex items-center gap-3 cursor-pointer"
-                    >
-                      <Mic size={16} className="text-white/70" />
-                      <span>Mock Interview</span>
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-
-              {/* Profile Avatar */}
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "w-9 h-9",
-                  },
-                }}
-              />
+              <div className="hidden md:block">
+                <UserButton
+                  appearance={{
+                    elements: {
+                      avatarBox: "h-10 w-10 ring-2 ring-white/10",
+                    },
+                  }}
+                />
+              </div>
             </SignedIn>
+
+            <Sheet>
+              <SheetTrigger asChild>
+                <button className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-white md:hidden">
+                  <Menu size={18} />
+                  <span className="sr-only">Open navigation</span>
+                </button>
+              </SheetTrigger>
+              <SheetContent className="border-white/10 bg-black/95 text-white backdrop-blur-xl">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center gap-2 text-left text-white">
+                    <BriefcaseBusiness className="h-5 w-5 text-sky-200" />
+                    HyrStack
+                  </SheetTitle>
+                </SheetHeader>
+                <div className="mt-8 grid gap-3">
+                  <SignedIn>
+                    {productLinks.map(({ href, label, icon: Icon }) => (
+                      <Link
+                        key={href}
+                        href={href}
+                        className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-white/80 transition hover:bg-white/10 hover:text-white"
+                      >
+                        <Icon size={17} className="text-sky-200" />
+                        {label}
+                      </Link>
+                    ))}
+                    <div className="mt-4">
+                      <UserButton />
+                    </div>
+                  </SignedIn>
+                  <SignedOut>
+                    <SignInButton>
+                      <button className="rounded-xl border border-white/10 px-4 py-3 text-left text-white/80">
+                        Sign In
+                      </button>
+                    </SignInButton>
+                    <SignUpButton>
+                      <button className="rounded-xl bg-white px-4 py-3 text-left font-semibold text-black">
+                        Get Started
+                      </button>
+                    </SignUpButton>
+                  </SignedOut>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>

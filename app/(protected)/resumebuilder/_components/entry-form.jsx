@@ -105,7 +105,7 @@ export function EntryForm({ type, entries, onChange }) {
     <div className="space-y-4">
       <div className="space-y-4">
         {entries.map((item, index) => (
-          <Card key={index}>
+          <Card key={index} className="border-white/10 bg-white/[0.04]">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 {item.title} @ {item.organization}
@@ -134,7 +134,7 @@ export function EntryForm({ type, entries, onChange }) {
       </div>
 
       {isAdding && (
-        <Card>
+        <Card className="border-white/10 bg-white/[0.04]">
           <CardHeader>
             <CardTitle>Add {type}</CardTitle>
           </CardHeader>

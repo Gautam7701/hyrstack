@@ -35,21 +35,19 @@ const OnboardingForm = ({ industries }) => {
     });
 
     const onSubmit = async (values) => {
-       console.log("onSubmit values:", values);
         try{
             const formattedIndustry = `${values.industry}${values.subIndustry ? ` - ${values.subIndustry.toLowerCase()
                 .replace(/\s+/g, '-')
                 .replace(/[^a-z0-9\-]/g, '')
             }` : ''}`;
 
-            const result = await updateUserFn({
+            await updateUserFn({
                 ...values,
                 industry: formattedIndustry,
             })
-            console.log("Server result:", result); 
         }
         catch(error){
-            console.log("Onboarding form submission error:", error);
+            toast.error(error.message || "Failed to update profile");
     }
 }
 
@@ -59,18 +57,14 @@ useEffect(() => {
         router.push('/dashboard');
         router.refresh();
     }
-}, [updateResult, updateLoading])
+}, [updateResult, updateLoading, router])
 
     const watchIndustry = watch("industry");
 return (
-  <div className="min-h-screen pt-28 flex justify-center bg-gradient-to-b from-black via-neutral-950 to-black">
+  <div className="relative flex min-h-screen justify-center px-4 pt-32">
     <Card
       className="
-        w-full max-w-xl mx-4
-        bg-white/5 backdrop-blur-xl
-        border border-white/10
-        shadow-xl shadow-black/40
-        rounded-2xl
+        h-fit w-full max-w-xl
       "
     >
       <CardHeader className="text-center space-y-2">
@@ -97,7 +91,7 @@ return (
                 setValue("subIndustry", "");
               }}
             >
-              <SelectTrigger className=" w-full bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select an industry" />
               </SelectTrigger>
               <SelectContent className="bg-black/90 border-white/10 text-white">
@@ -109,7 +103,7 @@ return (
               </SelectContent>
             </Select>
             {errors.industry && (
-              <p className="text-red-400 text-sm">{errors.industry.message}</p>
+                <p className="text-sm text-red-300">{errors.industry.message}</p>
             )}
           </div>
 
@@ -118,7 +112,7 @@ return (
             <div className="space-y-2">
               <Label className="text-white/80">Specialization</Label>
               <Select onValueChange={(value) => setValue("subIndustry", value)}>
-                <SelectTrigger className="w-full bg-white/5 border-white/10 text-white">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select specialization" />
                 </SelectTrigger>
                 <SelectContent className="bg-black/90 border-white/10 text-white">
@@ -130,7 +124,7 @@ return (
                 </SelectContent>
               </Select>
               {errors.subIndustry && (
-                <p className="text-red-400 text-sm">
+                <p className="text-sm text-red-300">
                   {errors.subIndustry.message}
                 </p>
               )}
@@ -145,14 +139,10 @@ return (
               min={0}
               max={50}
               placeholder="e.g. 2"
-              className="
-                bg-white/5 border-white/10
-                text-white placeholder:text-white/40
-              "
               {...register("experience",{valueAsNumber: true})}
             />
             {errors.experience && (
-              <p className="text-red-400 text-sm">
+                <p className="text-sm text-red-300">
                 {errors.experience.message}
               </p>
             )}
@@ -163,17 +153,13 @@ return (
             <Label className="text-white/80">Skills</Label>
             <Input
               placeholder="JavaScript, React, Node.js"
-              className="
-                bg-white/5 border-white/10
-                text-white placeholder:text-white/40
-              "
               {...register("skills")}
             />
             <p className="text-xs text-white/40">
               Separate skills with commas
             </p>
             {errors.skills && (
-              <p className="text-red-400 text-sm">{errors.skills.message}</p>
+              <p className="text-sm text-red-300">{errors.skills.message}</p>
             )}
           </div>
 
@@ -181,27 +167,19 @@ return (
           <div className="space-y-2">
             <Label className="text-white/80">Professional Bio</Label>
             <Textarea
-              className="
-                bg-white/5 border-white/10
-                text-white placeholder:text-white/40
-                min-h-[120px]
-              "
+              className="min-h-[120px]"
               placeholder="Briefly describe your professional background"
               {...register("bio")}
             />
             {errors.bio && (
-              <p className="text-red-400 text-sm">{errors.bio.message}</p>
+              <p className="text-sm text-red-300">{errors.bio.message}</p>
             )}
           </div>
 
           {/* Submit */}
           <Button
             type="submit"
-            className="
-              w-full h-11 rounded-xl
-              bg-white text-black font-medium
-              hover:bg-white/90 transition
-            "
+            className="w-full"
             disabled={updateLoading}
           >
             {updateLoading?(

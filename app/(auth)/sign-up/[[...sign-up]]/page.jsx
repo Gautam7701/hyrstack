@@ -1,46 +1,33 @@
-// import { SignUp } from '@clerk/nextjs'
-// import React from 'react'
-
-// const page = () => {
-//   return (
-//     <SignUp/>
-//   )
-// }
-
-// export default page
-
-
-import { SignIn, SignUp } from "@clerk/nextjs";
+import { SignUp } from "@clerk/nextjs";
 
 const authTheme = {
   variables: {
-    colorPrimary: "#6c47ff", // accent color (e.g., your brand)
+    colorPrimary: "#22d3ee",
     colorText: "#ffffff",
-    colorBackground: "#111111",
-    colorInputBackground: "rgba(255, 255, 255, 0.05)", // glass input
-    colorInputText: "#fff",
-    colorInputBorder: "rgba(255,255,255,0.2)",
-    colorButtonBackground: "rgba(255,255,255,0.1)",
-    colorButtonText: "#fff",
-    borderRadius: "12px",
+    colorBackground: "rgba(2, 6, 23, 0.92)",
+    colorInputBackground: "rgba(255, 255, 255, 0.06)",
+    colorInputText: "#ffffff",
+    colorInputBorder: "rgba(255,255,255,0.14)",
+    borderRadius: "14px",
   },
   layout: {
-    logoPlacement: "insideForm", // or 'aboveForm'
+    logoPlacement: "insideForm",
     socialButtonsVariant: "iconButton",
   },
   elements: {
-    formButtonPrimary: "bg-white/10 hover:bg-white/20 text-white transition rounded-xl",
-    formInput: "bg-white/5 text-white border border-white/20 rounded-lg px-3 py-2",
+    cardBox: "shadow-none",
+    card: "bg-transparent shadow-none border-0",
+    headerTitle: "text-white",
+    headerSubtitle: "text-white/60",
+    formButtonPrimary:
+      "bg-white text-black hover:bg-sky-100",
+    formInput:
+      "bg-white/[0.05] text-white border border-white/15 rounded-xl px-3 py-2",
+    footerActionText: "text-white/60",
+    footerActionLink: "text-sky-200 hover:text-sky-100",
   },
 };
 
 export default function SignUpPage() {
-  return (
-
-      <SignUp
-        path="/sign-up"
-        routing="path"
-        appearance={authTheme}
-      />
-  );
+  return <SignUp path="/sign-up" routing="path" appearance={authTheme} />;
 }

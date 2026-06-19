@@ -113,10 +113,7 @@ export default function StatsCards({ assessments }) {
           subtitle: "Most recent quiz",
         },
       ].map(({ title, value, icon: Icon, subtitle }, i) => (
-        <Card
-          key={i}
-          className="bg-white/5 backdrop-blur-xl border border-white/10"
-        >
+        <Card key={i}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm text-gray-300">{title}</CardTitle>
             <Icon className="h-4 w-4 text-white/60" />

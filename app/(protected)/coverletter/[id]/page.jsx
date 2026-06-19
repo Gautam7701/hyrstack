@@ -1,56 +1,28 @@
-// import Link from "next/link";
-// import { ArrowLeft } from "lucide-react";
-// import { Button } from "@/components/ui/button";
-// import { getCoverLetter } from "../../../actions/coverletter";
-// import CoverLetterPreview from "../_components/cover-letter-preview";
-
-// export default async function EditCoverLetterPage({ params }) {
-//   const { id } =  await params;
-//   const coverLetter = await getCoverLetter(id);
-
-//   return (
-//     <div className="container mx-auto py-6">
-//       <div className="flex flex-col space-y-2">
-//         <Link href="/coverletter">
-//           <Button variant="link" className="gap-2 pl-0">
-//             <ArrowLeft className="h-4 w-4" />
-//             Back to Cover Letters
-//           </Button>
-//         </Link>
-
-//         <h1 className="text-6xl font-bold gradient-title mb-6">
-//           {coverLetter?.jobTitle} at {coverLetter?.companyName}
-//         </h1>
-//       </div>
-
-//       <CoverLetterPreview content={coverLetter?.content} />
-//     </div>
-//   );
-// }
-
-
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import { getCoverLetter } from "../../../actions/coverletter";
 import CoverLetterPreview from "../_components/cover-letter-preview";
 
 export default async function EditCoverLetterPage({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const coverLetter = await getCoverLetter(id);
 
   return (
-    <div className="pt-28 px-6 max-w-7xl mx-auto space-y-8 min-h-screen text-white">
-      
-      <div className="flex flex-col space-y-4">
+    <div className="page-shell space-y-8">
+      <Button asChild variant="ghost" className="pl-0">
         <Link href="/coverletter">
-          <Button variant="link" className="gap-2 pl-0 text-white">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Cover Letters
-          </Button>
+          <ArrowLeft className="h-4 w-4" />
+          Back to Cover Letters
         </Link>
+      </Button>
 
-        <h1 className="text-6xl font-bold gradient-title">
+      <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.045] p-6 shadow-2xl shadow-black/20 backdrop-blur-xl md:p-8">
+        <p className="text-sm font-semibold uppercase tracking-[0.28em] text-sky-200/70">
+          Cover letter preview
+        </p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight text-white md:text-6xl">
           {coverLetter?.jobTitle} at {coverLetter?.companyName}
         </h1>
       </div>

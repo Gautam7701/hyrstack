@@ -15,8 +15,6 @@ import {
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
 } from "@/components/ui/dialog";
 import QuizResult from "./quiz-result";
 
@@ -100,7 +98,7 @@ export default function QuizList({ assessments }) {
 
   return (
     <>
-      <Card className="bg-white/5 backdrop-blur-xl border border-white/10 mb-10">
+      <Card className="mb-10">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -111,10 +109,7 @@ export default function QuizList({ assessments }) {
                 Review your past quiz performance
               </CardDescription>
             </div>
-            <Button
-              className="bg-white hover:bg-white/90 text-black"
-              onClick={() => router.push("/interview/mock")}
-            >
+            <Button onClick={() => router.push("/interview/mock")}>
               Start New Quiz
             </Button>
           </div>
@@ -150,6 +145,11 @@ export default function QuizList({ assessments }) {
               )}
             </div>
           ))}
+          {!assessments?.length && (
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center text-white/60">
+              No quizzes yet. Start a mock interview to build your trend line.
+            </div>
+          )}
         </CardContent>
       </Card>
 

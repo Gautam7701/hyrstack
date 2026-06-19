@@ -34,8 +34,6 @@ const Quiz = () => {
     }= useFetch(saveQuizResult)
     
 
-    console.log(resultData);
-
     useEffect(() => {
   if (!resultData) return;
 
@@ -45,13 +43,6 @@ const Quiz = () => {
     toast.error(resultData.message || "Failed to save quiz results.");
   }
 }, [resultData]);
-
-    useEffect(() => {
-        if (quizData) {
-            setAnswers(new Array(quizData.length).fill(null));
-        }
-    }, [quizData])
-
 
     const handleAnswer = (answer)=>{
         const newAnswers = [...answers];
@@ -96,7 +87,7 @@ const Quiz = () => {
         generateQuizFn();
     }
     if (generatingQuiz) {
-        return <BarLoader className="mt-4" width={"100%"} color="gray" />;
+        return <BarLoader className="mt-4" width={"100%"} color="#67e8f9" />;
     }
 
 
@@ -110,17 +101,17 @@ const Quiz = () => {
     }
     if (!quizData) {
         return (
-            <Card>
+            <Card className="text-center">
                 <CardHeader>
-                    <CardTitle>Ready to test your knowledge?</CardTitle>
+                    <CardTitle className="text-2xl text-white">Ready to test your knowledge?</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p>
+                    <p className="text-white/60">
                         This quiz contains 10 questions to help you assess your understanding of key concepts.
                     </p>
                 </CardContent>
                 <CardFooter>
-                    <Button className="w-full" onClick={generateQuizFn}>Start Quiz</Button>
+                    <Button className="w-full" size="lg" onClick={generateQuizFn}>Start Quiz</Button>
                 </CardFooter>
             </Card>
         )
@@ -134,7 +125,7 @@ const Quiz = () => {
                 <CardTitle>Question {currentQuestion + 1} of {quizData.length}</CardTitle>
             </CardHeader>
             <CardContent>
-                <p className='text-lg font-medium'>
+                    <p className='text-lg font-medium text-white'>
                     {question.question}
 
                 </p>
@@ -153,8 +144,8 @@ const Quiz = () => {
                 </RadioGroup>
 
                 {showExplanation && (<div>
-                    <p className='font-medium'>Explanation: </p>
-                    <p className='text-muted-foreground'>{question.explanation || "Explanation not available for this question."}</p>
+                    <p className='font-medium text-white'>Explanation: </p>
+                    <p className='text-white/60'>{question.explanation || "Explanation not available for this question."}</p>
                     </div>)}
             </CardContent>
             <CardFooter className="flex justify-between">
@@ -171,7 +162,7 @@ const Quiz = () => {
                 }
                  {
                                 savingResult && (
-                                    <BarLoader className='mt-4' width={"100%"} color="gray" />
+                                    <BarLoader className='mt-4' width={"100%"} color="#67e8f9" />
                                 )
                             }
                 <Button

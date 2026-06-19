@@ -1,351 +1,230 @@
-// "use client"
-// import { get } from 'http';
-// import React from 'react'
-// import { format, formatDistanceToNow } from 'date-fns';
-// import { Badge } from '@/components/ui/badge';
-
-// const DashboardView = ({ insights }) => {
-//   //   if (!insights) {
-//   //   return <div className="text-white/60">Loading insights...</div>;
-//   // }
-
-//   // if (!Array.isArray(insights.salaryRanges)) {
-//   //   return (
-//   //     <div className="text-red-500">
-//   //       Salary data unavailable. Please refresh.
-//   //     </div>
-//   //   );
-//   // }
-//   const salaryData = insights.salaryRanges.map((range)=>({
-//     name:range.role,
-//     min:range.min/1000,
-//     max:range.max/1000,
-//     median:range.median/1000,
-//     location:range.location 
-//   }));
-
-//   const getDemandLevelColor = (level) => {
-//     switch (level.toLowerCase()) {
-//       case "High": return "text-green-500";
-//       case "Medium": return "text-yellow-500";
-//       case "Low": return "text-red-500";
-//       default: return "text-gray-500";
-//     }
-//   };
-
-
-//   const getMarketOutlookInfo=(outlook)=>{
-//     switch (outlook.toLowerCase()) {
-//       case "positive": return { icon: "📈", color: "text-green-500" };
-//       case "negative": return { icon: "📉", color: "text-red-500" };
-//       case "neutral": return { icon: "📊", color: "text-yellow-500" };
-//       default: return { icon: "📊", color: "text-gray-500" };
-//     }
-//   };
-
-//   const OutlookIcon= getMarketOutlookInfo(insights.marketOutlook).icon;
-//   const outlookColor= getMarketOutlookInfo(insights.marketOutlook).color;
-
-
-//   const lastUpdatedDate = format(new Date(insights.updatedAt), 'MMMM dd, yyyy');
-//   const nextUpdateDistance = formatDistanceToNow(new Date(insights.nextUpdate), { addSuffix: true }); 
-//   return (
-//     <div className='space-y-6'>
-//         <div className='flex justify-between items-center'>
-//           <Badge variant="default | outline | secondary | destructive">Last updated: {lastUpdatedDate}</Badge>
-//         </div>
-//     </div>
-//   )
-// }
-
-// export default DashboardView;
-
-
-// "use client"
-
-// import React from 'react';
-// import { format, formatDistanceToNow } from 'date-fns';
-// import { Badge } from '@/components/ui/badge';
-// import { Card, CardHeader, CardTitle, CardDescription, CardContent} from '@/components/ui/card';
-
-// const DashboardView = ({ insights }) => {
-//   if (!insights) return <div className="text-white/60">Loading insights...</div>;
-
-//   const salaryData = Array.isArray(insights.salaryRanges)
-//     ? insights.salaryRanges.map((range) => ({
-//       name: range.role,
-//       min: range.min / 1000,
-//       max: range.max / 1000,
-//       median: range.median / 1000,
-//       location: range.location,
-//     }))
-//     : [];
-
-//   const getDemandLevelColor = (level) => {
-//     switch (level?.toLowerCase?.()) {
-//       case "high": return "text-green-500";
-//       case "medium": return "text-yellow-500";
-//       case "low": return "text-red-500";
-//       default: return "text-gray-500";
-//     }
-//   };
-
-//   const getMarketOutlookInfo = (outlook) => {
-//     switch (outlook?.toLowerCase?.()) {
-//       case "positive": return { icon: "📈", color: "text-green-500" };
-//       case "negative": return { icon: "📉", color: "text-red-500" };
-//       case "neutral": return { icon: "📊", color: "text-yellow-500" };
-//       default: return { icon: "📊", color: "text-gray-500" };
-//     }
-//   };
-
-//   const { icon: OutlookIcon, color: outlookColor } = getMarketOutlookInfo(insights.marketOutlook);
-
-//   const lastUpdatedDate = insights.lastUpdated
-//     ? format(new Date(insights.lastUpdated), 'MMMM dd, yyyy')
-//     : "N/A";
-
-//   const nextUpdateDistance = insights.nextUpdate
-//     ? formatDistanceToNow(new Date(insights.nextUpdate), { addSuffix: true })
-//     : "N/A";
-
-//   return (
-//     <div className='space-y-6'>
-//       <div className='flex justify-between items-center'>
-//         <Badge variant="default">Last updated: {lastUpdatedDate}</Badge>
-//       </div>
-//       <div>
-//         <Card>
-//           <CardHeader className='flex items-center justify-between space-y-0 pb-2'>
-//             <CardTitle className="text-sm font-medium">Market Outlook</CardTitle>
-//             <OutlookIcon className={`h-4 w-4 ${outlookColor}`} />
-//           </CardHeader>
-//           <CardContent>
-//             <div className='text-2xl font-bold'>{insights.marketOutlook}</div>
-//             <p className='mt-2 text-xs text-muted-foreground'>
-//               Next update {nextUpdateDistance}
-//             </p>
-//           </CardContent>
-//         </Card>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default DashboardView;
-
-
 "use client";
 
-import React from "react";
 import { format, differenceInDays } from "date-fns";
-import { TrendingUp, TrendingDown, BarChart, Briefcase, BriefcaseIcon, Brain, Salad } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import {
+  BarChart,
+  Brain,
+  BriefcaseIcon,
+  TrendingDown,
+  TrendingUp,
+} from "lucide-react";
+import {
+  Bar,
+  BarChart as RechartsBarChart,
+  CartesianGrid,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardContent,
-  CardDescription
 } from "@/components/ui/card";
-import {
-  BarChart as RechartsBarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
-
+import { Progress } from "@/components/ui/progress";
 
 const DashboardView = ({ insights }) => {
-  console.log("Insights:", insights);
-  console.log("Top skills:", insights?.topSkills);
   if (!insights) {
-    return <div className="text-white/60">Loading insights...</div>;
+    return (
+      <Card>
+        <CardContent className="py-10 text-white/60">
+          Loading insights...
+        </CardContent>
+      </Card>
+    );
   }
+
   const salaryData = insights.salaryRanges.map((range) => ({
     name: range.role,
     min: range.min / 1000,
     max: range.max / 1000,
     median: range.median / 1000,
-    location: range.location
+    location: range.location,
   }));
 
-
-  const getDemandLevelColor = (level) => {
+  const getDemandLevelClass = (level) => {
     switch (level?.toLowerCase?.()) {
       case "high":
-        return "bg-green-500";
+        return "from-white to-sky-200";
       case "medium":
-        return "bg-yellow-500";
+        return "from-yellow-300 to-orange-300";
       case "low":
-        return "bg-red-500";
+        return "from-red-300 to-pink-300";
       default:
-        return "bg-gray-500";
+        return "from-slate-300 to-slate-500";
     }
   };
 
   const getMarketOutlookInfo = (outlook) => {
     switch (outlook?.toLowerCase?.()) {
       case "positive":
-        return { Icon: TrendingUp, color: "text-green-500" };
+        return { Icon: TrendingUp, color: "text-emerald-300" };
       case "negative":
-        return { Icon: TrendingDown, color: "text-red-500" };
+        return { Icon: TrendingDown, color: "text-red-300" };
       case "neutral":
-        return { Icon: BarChart, color: "text-yellow-500" };
+        return { Icon: BarChart, color: "text-yellow-300" };
       default:
-        return { Icon: BarChart, color: "text-gray-500" };
+        return { Icon: BarChart, color: "text-white/60" };
     }
   };
-
-
 
   const lastUpdatedDate = insights.lastUpdated
     ? format(new Date(insights.lastUpdated), "MMMM dd, yyyy")
     : "N/A";
 
   const nextUpdateDistance = insights.nextUpdate
-    ? `in ${differenceInDays(
-      new Date(insights.nextUpdate),
-      new Date()
-    )} days`
+    ? `in ${Math.max(
+        differenceInDays(new Date(insights.nextUpdate), new Date()),
+        0
+      )} days`
     : "N/A";
 
-  const { Icon: OutlookIcon, color: outlookColor } =
-    getMarketOutlookInfo(insights.marketOutlook);
+  const { Icon: OutlookIcon, color: outlookColor } = getMarketOutlookInfo(
+    insights.marketOutlook
+  );
 
-
+  const summaryCards = [
+    {
+      title: "Market Outlook",
+      value: insights.marketOutlook,
+      helper: `Next update ${nextUpdateDistance}`,
+      Icon: OutlookIcon,
+      iconClass: outlookColor,
+    },
+    {
+      title: "Industry Growth",
+      value: `${insights.growthRate.toFixed(1)}%`,
+      helper: "Projected momentum",
+      Icon: TrendingUp,
+      iconClass: "text-sky-200",
+      progress: insights.growthRate,
+    },
+    {
+      title: "Demand Level",
+      value: insights.demandLevel,
+      helper: "Hiring signal strength",
+      Icon: BriefcaseIcon,
+      iconClass: "text-sky-200",
+      demand: true,
+    },
+    {
+      title: "Top Skills",
+      value: `${insights.topSkills?.length || 0} skills`,
+      helper: "Most requested keywords",
+      Icon: Brain,
+      iconClass: "text-sky-200",
+      skills: insights.topSkills,
+    },
+  ];
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <Badge variant="default">
-          Last updated: {lastUpdatedDate}
-        </Badge>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Badge variant="secondary">Last updated: {lastUpdatedDate}</Badge>
+        <p className="text-sm text-white/45">
+          Salary data displayed in thousands (K)
+        </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Market Outlook */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Market Outlook
-            </CardTitle>
-            <OutlookIcon className={`h-5 w-5 ${outlookColor}`} />
-          </CardHeader>
 
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {insights.marketOutlook}
-            </div>
-
-            <p className="mt-2 text-xs text-muted-foreground">
-              Next update {nextUpdateDistance}
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Industry Growth */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Industry Growth
-            </CardTitle>
-            <TrendingUp className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {insights.growthRate.toFixed(1)}%
-            </div>
-            <Progress value={insights.growthRate} className="mt-2" />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Demand Level
-            </CardTitle>
-            <BriefcaseIcon className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {insights.demandLevel}
-            </div>
-            <div
-              className={`h-2 w-full rounded-full mt-2 ${getDemandLevelColor(insights.demandLevel)}`}
-            />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Top Skills
-            </CardTitle>
-            <Brain className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-
-          <CardContent>
-            <div className="flex flex-wrap">
-              {insights.topSkills?.length > 0 ? (
-                insights.topSkills.map((skill) => (
-                  <Badge key={skill} className="mr-2 mb-2" variant="secondary">
-                    {skill}
-                  </Badge>
-                ))
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No skills data available
-                </p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {summaryCards.map(
+          ({ title, value, helper, Icon, iconClass, progress, demand, skills }) => (
+            <Card key={title} className="overflow-hidden">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-white/65">
+                  {title}
+                </CardTitle>
+                <Icon className={`h-5 w-5 ${iconClass}`} />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-semibold text-white">{value}</div>
+                <p className="mt-2 text-xs text-white/45">{helper}</p>
+                {progress !== undefined && (
+                  <Progress value={progress} className="mt-4 h-2" />
+                )}
+                {demand && (
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className={`h-full rounded-full bg-gradient-to-r ${getDemandLevelClass(
+                        insights.demandLevel
+                      )}`}
+                    />
+                  </div>
+                )}
+                {skills && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {skills.length > 0 ? (
+                      skills.slice(0, 4).map((skill) => (
+                        <Badge key={skill} variant="outline">
+                          {skill}
+                        </Badge>
+                      ))
+                    ) : (
+                      <p className="text-sm text-white/45">
+                        No skills data available
+                      </p>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )
+        )}
       </div>
+
       <Card>
         <CardHeader>
-          <CardTitle>Salary Ranges by Role</CardTitle>
+          <CardTitle className="text-2xl text-white">
+            Salary Ranges by Role
+          </CardTitle>
           <CardDescription>
-            Salary ranges are shown in thousands (K)
+            Compare minimum, median, and maximum compensation bands.
           </CardDescription>
         </CardHeader>
-
         <CardContent>
-          <div className="h-[400px] w-full">
+          <div className="h-[420px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <RechartsBarChart data={salaryData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
+                <CartesianGrid stroke="rgba(255,255,255,0.08)" />
+                <XAxis dataKey="name" stroke="rgba(255,255,255,0.55)" />
+                <YAxis stroke="rgba(255,255,255,0.55)" />
+                <Tooltip
+                  contentStyle={{
+                    background: "rgba(2, 6, 23, 0.92)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    borderRadius: "14px",
+                    color: "#fff",
+                  }}
+                />
                 <Legend />
-                <Bar dataKey="min" name="Min Salary (K)" />
-                <Bar dataKey="max" name="Max Salary (K)" />
-                <Bar dataKey="median" name="Median Salary (K)" />
+                <Bar dataKey="min" name="Min Salary (K)" fill="#67e8f9" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="median" name="Median Salary (K)" fill="#60a5fa" radius={[8, 8, 0, 0]} />
+                <Bar dataKey="max" name="Max Salary (K)" fill="#a78bfa" radius={[8, 8, 0, 0]} />
               </RechartsBarChart>
             </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Key Industry Trends</CardTitle>
-            <CardDescription>
-              Current trends shaping the industry
-            </CardDescription>
+            <CardTitle className="text-2xl text-white">
+              Key Industry Trends
+            </CardTitle>
+            <CardDescription>Current themes shaping your market.</CardDescription>
           </CardHeader>
           <CardContent>
-            <ul>
+            <ul className="space-y-3">
               {insights.keyTrends.map((trend, index) => (
-                <li key={index} className="mb-2 flex items-start space-x-2">
-                  <div className="ml-4 h-2 w-2 mt-2 rounded-full bg-primary"/>
+                <li key={index} className="flex items-start gap-3 text-white/72">
+                  <span className="mt-2 h-2 w-2 rounded-full bg-sky-200" />
                   <span>{trend}</span>
                 </li>
               ))}
@@ -355,15 +234,15 @@ const DashboardView = ({ insights }) => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Recommended Skills</CardTitle>
-            <CardDescription>
-              Skills recommended for career growth
-            </CardDescription>
+            <CardTitle className="text-2xl text-white">
+              Recommended Skills
+            </CardTitle>
+            <CardDescription>High-signal skills to prioritize.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div>
+            <div className="flex flex-wrap gap-2">
               {insights.recommendedSkills.map((skill) => (
-                <Badge key={skill} className="mr-2 mb-2" variant="outline">
+                <Badge key={skill} variant="outline">
                   {skill}
                 </Badge>
               ))}

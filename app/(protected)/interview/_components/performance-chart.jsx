@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { format } from "date-fns";
 
 // export default function PerformanceChart({ assessments }) {
@@ -79,21 +79,17 @@ import { format } from "date-fns";
 // }
 
 export default function PerformanceChart({ assessments }) {
-  const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    if (assessments) {
-      setChartData(
-        assessments.map((a) => ({
-          date: format(new Date(a.createdAt), "MMM dd"),
-          score: a.quizScore,
-        }))
-      );
-    }
-  }, [assessments]);
+  const chartData = useMemo(
+    () =>
+      assessments?.map((a) => ({
+        date: format(new Date(a.createdAt), "MMM dd"),
+        score: a.quizScore,
+      })) || [],
+    [assessments]
+  );
 
   return (
-    <Card className="bg-white/5 backdrop-blur-xl border border-white/10">
+    <Card>
       <CardHeader>
         <CardTitle className="gradient-title text-3xl md:text-4xl">
           Performance Trend

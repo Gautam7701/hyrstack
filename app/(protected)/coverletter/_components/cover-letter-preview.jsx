@@ -5,8 +5,8 @@ import MDEditor from "@uiw/react-md-editor";
 
 const CoverLetterPreview = ({ content }) => {
   return (
-    <div className="py-4">
-      <MDEditor value={content} preview="preview" height={700} />
+    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
+      <MDEditor value={content} preview="preview" height={720} />
     </div>
   );
 };
